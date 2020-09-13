@@ -1,4 +1,4 @@
-# Dgraph Backup-Restore 
+# Dgraph Backup Restore (dgbr)
 
 ## Details
 This tool allows to export and import Dgraph database to AWS S3 bucket. Backups are created by requesting Dgraph to export existing database, archiving the data and uploading it to the S3 bucket. Backups can be configured to be made periodically. Database restore allows to download existing archive from S3 bucket and import it to the database using live loader.
