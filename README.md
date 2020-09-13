@@ -62,3 +62,7 @@ If you start `dgraph alpha` using
 dgraph alpha --lru_mb 2048 -p /var/run/dgraph/p -w /var/run/dgraph/w --export /exports
 ```
 your export path is `/exports`.
+
+##### Origin
+
+Project was inspired by `https://github.com/xanthous-tech/dgraph-backup-cli`, yet I found it to have multiple issues and lacking documentation.
