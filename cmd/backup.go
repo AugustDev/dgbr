@@ -19,9 +19,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/AugustDev/dgraph-backup-restore/pkg/awsx"
-	"github.com/AugustDev/dgraph-backup-restore/pkg/core"
-	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph"
+	"github.com/AugustDev/dgbr/pkg/awsx"
+	"github.com/AugustDev/dgbr/pkg/core"
+	"github.com/AugustDev/dgbr/pkg/dgraph"
 	"github.com/spf13/cobra"
 )
 

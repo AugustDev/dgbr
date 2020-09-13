@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph"
+	"github.com/AugustDev/dgbr/pkg/dgraph"
 	"github.com/mholt/archiver"
 )
 

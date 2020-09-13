@@ -10,7 +10,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph/internal/types"
+	"github.com/AugustDev/dgbr/pkg/dgraph/internal/types"
 )
 
 // TempDataFolder - holds directory to extract backups before importing

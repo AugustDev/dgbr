@@ -1,4 +1,4 @@
-module github.com/AugustDev/dgraph-backup-restore
+module github.com/AugustDev/dgbr
 
 go 1.14
 

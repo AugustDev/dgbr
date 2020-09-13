@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/AugustDev/dgraph-backup-restore/pkg/awsx"
-	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph"
-	"github.com/AugustDev/dgraph-backup-restore/pkg/utils"
+	"github.com/AugustDev/dgbr/pkg/awsx"
+	"github.com/AugustDev/dgbr/pkg/dgraph"
+	"github.com/AugustDev/dgbr/pkg/utils"
 )
 
 // Config - collects all configuration variables into unified struct
@@ -68,11 +68,13 @@ func (conf *Config) validateBackupRequest() error {
 // 4. Clean export and archive files
 func (conf *Config) BackupSequence() error {
 
+	fmt.Println("validating request...")
 	err := conf.validateBackupRequest()
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("exporting data...")
 	err = conf.dg.Export()
 	if err != nil {
 		return err
@@ -83,16 +85,19 @@ func (conf *Config) BackupSequence() error {
 		time.Now().Format(time.RFC3339),
 	)
 
+	fmt.Println("archiving backup...")
 	err = utils.Archive(conf.dg.ExportPath, archiveName)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("uploading backup...")
 	err = conf.aws.UploadToS3(archiveName)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("cleaning up...")
 	err = utils.Clean(conf.dg.ExportPath, archiveName)
 	if err != nil {
 		return err

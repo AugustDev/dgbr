@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/AugustDev/dgraph-backup-restore/cmd"
+import "github.com/AugustDev/dgbr/cmd"
 
 func main() {
 	cmd.Execute()
