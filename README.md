@@ -29,8 +29,31 @@ dgbr restore \
 ```
 
 ## Periodic backups
-TBD
+To schedule perodic (daily) backups simply create a script and add it to your cron list. Make sure that `dgbr` is in the appropriate `bin` folder.
 
+```bash
+#!/bin/bash
+export PATH="/usr/local/bin:/usr/bin:/bin"
+
+AWS_ACCESS_KEY=X
+AWS_SECRET_KEY=Y
+BUCKET=views-dgraph-backups-development
+REGION=eu-west-1
+EXPORT_PATH=/Users/amiras/exports
+
+dgbr backup \
+--AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
+--AWS_SECRET_KEY=${AWS_SECRET_KEY} \
+--bucket=${BUCKET}  \
+--region=${REGION}  \
+--export=${EXPORT_PATH} 
+```
+
+An example of hourly export cronjob would be
+```bash
+0 * * * * /Users/august/backup.sh >> /Users/august/log.txt 2>&1
+```
+where the logs are saved at `/Users/august/log.txt`.
 ### FAQ
 ##### What is my export path?
 
