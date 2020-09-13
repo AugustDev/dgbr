@@ -29,7 +29,7 @@ dgbr restore \
 ```
 
 ## Periodic backups
-To schedule perodic (daily) backups simply create a script and add it to your cron list. Make sure that `dgbr` is in the appropriate `bin` folder.
+To schedule perodic (daily, hourly etc.) backups simply create a script and add it to your cron list. Make sure that `dgbr` is in the appropriate `bin` folder.
 
 ```bash
 #!/bin/bash
@@ -53,7 +53,7 @@ An example of hourly export cronjob would be
 ```bash
 0 * * * * /Users/august/backup.sh >> /Users/august/log.txt 2>&1
 ```
-where the logs are saved at `/Users/august/log.txt`.
+where the logs are saved to `/Users/august/log.txt`.
 ## Notes
 ##### What is my export path?
 
