@@ -6,7 +6,7 @@ This tool allows to export and import Dgraph database to AWS S3 bucket. Backups 
 ## Usage
 Both Dgraph export and import actions require specifying: `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `bucket` and `region`.
 ### Backup
-In adition to aforementioned variables export requires to specify Dgraph `export` path which is specified when starting `dgraph alpha`. (Read in Notes)
+In adition to aforementioned variables export requires to specify Dgraph `export` path which is specified when starting `dgraph alpha` (Read in Notes). Make sure Dgrpah has permission to write to that path.
 
 ```bash
 dgbr backup \
