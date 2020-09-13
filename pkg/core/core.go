@@ -1,6 +1,7 @@
 package core
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -23,6 +24,42 @@ func New(dg dgraph.Config, aws awsx.Config) Config {
 	}
 }
 
+func (conf *Config) validateBackupRequest() error {
+	if conf.aws.IAMAccessKey == "" {
+		return errors.New("missing AWS IAM access key")
+	}
+
+	if conf.aws.IAMSecretKey == "" {
+		return errors.New("missing AWS IAM secret key")
+	}
+
+	if conf.aws.Region == "" {
+		return errors.New("missing AWS region")
+	}
+
+	if conf.aws.Bucket == "" {
+		return errors.New("missing S3 bucket name")
+	}
+
+	if conf.dg.ExportPath == "" {
+		return errors.New("missing Dgraph exports path")
+	}
+
+	if conf.dg.ExportFormat != "json" && conf.dg.ExportFormat != "rdf" {
+		return errors.New("incorrect export format, requried json or rdf")
+	}
+
+	if conf.dg.Host == "" {
+		return errors.New("missing dgraph host name")
+	}
+
+	if conf.dg.HostPort == "" {
+		return errors.New("missing dgraph host port")
+	}
+
+	return nil
+}
+
 // BackupSequence - initiates backup sequence
 // 1. Request Dgraph export
 // 2. Compress export contents
@@ -30,14 +67,18 @@ func New(dg dgraph.Config, aws awsx.Config) Config {
 // 4. Clean export and archive files
 func (conf *Config) BackupSequence() error {
 
-	err := conf.dg.Export()
+	err := conf.validateBackupRequest()
 	if err != nil {
 		return err
 	}
 
-	archiveName := fmt.Sprintf("./%s-%s-%s.zip",
+	err = conf.dg.Export()
+	if err != nil {
+		return err
+	}
+
+	archiveName := fmt.Sprintf("./%s-%s.zip",
 		conf.dg.ExportFilePrefix,
-		conf.dg.Hostname,
 		time.Now().Format(time.RFC3339),
 	)
 
@@ -56,6 +97,7 @@ func (conf *Config) BackupSequence() error {
 		return err
 	}
 
+	fmt.Println("Backup successful.")
 	return nil
 }
 

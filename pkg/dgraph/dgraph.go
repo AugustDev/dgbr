@@ -18,7 +18,7 @@ var TempDataFolder = "data/"
 
 // Config - collects all parameters related to interacting with Dgraph
 type Config struct {
-	Hostname         string
+	Host             string
 	HostPort         string
 	ExportPath       string
 	ExportFormat     string
@@ -47,7 +47,7 @@ type Config struct {
 
 // Export - initiates exporting Dgraph
 func (dg *Config) Export() error {
-	exportURL := fmt.Sprintf("http://%s:%s/admin/export?format=%s", dg.Hostname, dg.HostPort, dg.ExportFormat)
+	exportURL := fmt.Sprintf("http://%s:%s/admin/export?format=%s", dg.Host, dg.HostPort, dg.ExportFormat)
 
 	res, err := http.Get(exportURL)
 	if err != nil {
