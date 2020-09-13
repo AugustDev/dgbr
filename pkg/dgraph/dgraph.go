@@ -29,22 +29,6 @@ type Config struct {
 	ZeroPort         string
 }
 
-// func (dg *Dgraph) validate() error {
-// 	if dg.Hostname == nil {
-// 		return errors.New("dgraph hostname is missing")
-// 	}
-
-// 	if dg.ExportFormat == nil {
-// 		return errors.New("dgraph export path is missing")
-// 	}
-
-// 	if dg.ExportFormat == nil {
-// 		return errors.New("dgraph export format is missing")
-// 	}
-
-// 	return nil
-// }
-
 // Export - initiates exporting Dgraph
 func (dg *Config) Export() error {
 	exportURL := fmt.Sprintf("http://%s:%s/admin/export?format=%s", dg.Host, dg.HostPort, dg.ExportFormat)

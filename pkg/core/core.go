@@ -3,6 +3,7 @@ package core
 import (
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/AugustDev/dgraph-backup-restore/pkg/awsx"
@@ -180,6 +181,8 @@ func (conf *Config) RestoreSequence(filename string) error {
 	if err != nil {
 		return err
 	}
+
+	_ = os.Remove(filepath)
 
 	fmt.Println("Restore successful.")
 	return nil

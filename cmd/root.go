@@ -56,10 +56,6 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.dgraph-backup-restore.yaml)")
 	rootCmd.PersistentFlags().StringVar(&awsAccessKey, "AWS_ACCESS_KEY", "", "AWS access key for your IAM user (required)")
 	rootCmd.PersistentFlags().StringVar(&awsSecretKey, "AWS_SECRET_KEY", "", "AWS secret key for your IAM user (requried)")
