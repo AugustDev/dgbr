@@ -35,11 +35,10 @@ var bucket string
 var rootCmd = &cobra.Command{
 	Use:   "dgbr",
 	Short: "Dgraph community backup restore tool",
-	Long: `Dgraph community backup restore tool:
+	Long: `Dgraph Backup-Restore community edition
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+This tool allows to export Dgraph database and schema and automatically upload it to S3 bucket.
+Furthermore backups from S3 bucket can be initiated using the CLI.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },

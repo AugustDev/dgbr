@@ -39,11 +39,14 @@ var zeroPort string
 var backupCmd = &cobra.Command{
 	Use:   "backup",
 	Short: "Initiates backup to AWS S3 bucket",
-	Long: `Backup command initiates backup to AWS S3 bucket. First tool requests
+	Long: `
+Backup command initiates backup to AWS S3 bucket. First tool requests
 dgraph to export database and schema to export folder, archives the data, pushes
 to S3 bucket and cleans up afterwards.
 
-dgbr backup --region=eu-west-1 --bucket=my-dev-bucket`,
+Example use:
+
+dgbr backup --AWS_ACCESS_KEY=X --AWS_SECRET_KEY=Y --bucket=my-dgraph-backups --region=eu-west-1 --export=/exports`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		awsc := awsx.Config{
