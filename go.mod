@@ -3,6 +3,7 @@ module github.com/AugustDev/dgraph-backup-restore
 go 1.14
 
 require (
+	github.com/aws/aws-sdk-go v1.34.22
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/mholt/archiver v3.1.1+incompatible

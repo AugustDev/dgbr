@@ -1,20 +1,16 @@
 package dgraph
 
 import (
-	"compress/flate"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
-	"time"
 
 	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph/internal/types"
-	"github.com/mholt/archiver"
 )
 
-// Dgraph - collects all parameters related to interacting with Dgraph
-type Dgraph struct {
+// Config - collects all parameters related to interacting with Dgraph
+type Config struct {
 	Hostname         string
 	HostPort         string
 	ExportPath       string
@@ -39,7 +35,7 @@ type Dgraph struct {
 // }
 
 // Export - initiates exporting Dgraph
-func (dg *Dgraph) Export() error {
+func (dg *Config) Export() error {
 	exportURL := fmt.Sprintf("http://%s:%s/admin/export?format=%s", dg.Hostname, dg.HostPort, dg.ExportFormat)
 
 	res, err := http.Get(exportURL)
@@ -55,25 +51,4 @@ func (dg *Dgraph) Export() error {
 	}
 
 	return errors.New(response.Message)
-}
-
-func (dg *Dgraph) Archive() (filePath string, err error) {
-	z := archiver.Zip{
-		CompressionLevel: flate.DefaultCompression,
-	}
-
-	archiveName := fmt.Sprintf("./%s-%s-%s.zip",
-		dg.ExportFilePrefix,
-		dg.Hostname,
-		time.Now().Format(time.RFC3339),
-	)
-
-	fmt.Println(archiveName)
-
-	err = z.Archive([]string{dg.ExportPath}, archiveName)
-	if err != nil {
-		log.Fatal("err Zipping", err)
-		return "", err
-	}
-	return archiveName, nil
 }
