@@ -71,10 +71,6 @@ func init() {
 	rootCmd.MarkFlagRequired("AWS_SECRET_KEY")
 	rootCmd.MarkFlagRequired("region")
 	rootCmd.MarkFlagRequired("bucket")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -92,7 +88,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".dgraph-backup-restore" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".dgraph-backup-restore")
+		viper.SetConfigName(".dgbr")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

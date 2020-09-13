@@ -101,38 +101,86 @@ func (conf *Config) BackupSequence() error {
 	return nil
 }
 
+func (conf *Config) validateRestoreRequest() error {
+	if conf.aws.IAMAccessKey == "" {
+		return errors.New("missing AWS IAM access key")
+	}
+
+	if conf.aws.IAMSecretKey == "" {
+		return errors.New("missing AWS IAM secret key")
+	}
+
+	if conf.aws.Region == "" {
+		return errors.New("missing AWS region")
+	}
+
+	if conf.aws.Bucket == "" {
+		return errors.New("missing S3 bucket name")
+	}
+
+	if conf.dg.AlphaHost == "" {
+		return errors.New("missing Dgraph alpha host")
+	}
+
+	if conf.dg.AlphaHost == "" {
+		return errors.New("missing Dgraph alpha port")
+	}
+
+	if conf.dg.ZeroHost == "" {
+		return errors.New("missing Dgraph zero host")
+	}
+
+	if conf.dg.ZeroPort == "" {
+		return errors.New("missing Dgraph zero port")
+	}
+
+	return nil
+}
+
 // RestoreSequence - initiates restore sequence
 // 1. Download backup from S3 bucket
 // 2. Unarchive to temporary folder
 // 3. Obtain schema
 // 4. Perform dgraph import using live loader
 // 5. Cleans temporary folder
-func (conf *Config) RestoreSequence() error {
+func (conf *Config) RestoreSequence(filename string) error {
 
-	filepath, err := conf.aws.DownloadFromS3("aa-localhost-2020-09-13T08:52:59+01:00.zip")
+	fmt.Println("Validating config...")
+	err := conf.validateRestoreRequest()
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
+	fmt.Println("Downloading backup from S3...")
+	filepath, err := conf.aws.DownloadFromS3(filename)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Unarchiving backup...")
 	restorePath, err := utils.Unarchive(filepath)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("Finding schema...")
 	schemaPath, err := utils.GetSchemaPath(dgraph.TempDataFolder)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("Initiating Dgrpah restore...")
 	err = conf.dg.Restore(restorePath, schemaPath)
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("Cleaning ...")
 	err = utils.CleanAfterRestore()
 	if err != nil {
 		return err
 	}
 
+	fmt.Println("Restore successful.")
 	return nil
 }
