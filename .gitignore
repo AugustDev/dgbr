@@ -1,2 +1,3 @@
 *.zip
 bin/
+.DS_Store
