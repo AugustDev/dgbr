@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph/internal/types"
 	"github.com/mholt/archiver"
@@ -55,11 +57,23 @@ func (dg *Dgraph) Export() error {
 	return errors.New(response.Message)
 }
 
-func (dg *Dgraph) archive() error {
+func (dg *Dgraph) Archive() (filePath string, err error) {
 	z := archiver.Zip{
 		CompressionLevel: flate.DefaultCompression,
 	}
 
-	// archiveName := fmt.Sprintf()
+	archiveName := fmt.Sprintf("./%s-%s-%s.zip",
+		dg.ExportFilePrefix,
+		dg.Hostname,
+		time.Now().Format(time.RFC3339),
+	)
 
+	fmt.Println(archiveName)
+
+	err = z.Archive([]string{dg.ExportPath}, archiveName)
+	if err != nil {
+		log.Fatal("err Zipping", err)
+		return "", err
+	}
+	return archiveName, nil
 }
