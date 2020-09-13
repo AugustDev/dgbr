@@ -41,8 +41,8 @@ func (dg *Config) Export() error {
 	response := types.ExportResponse{}
 	json.NewDecoder(res.Body).Decode(&response)
 
-	if response.Code == "Success" {
-		return nil
+	if len(response.Errors) > 0 {
+		return errors.New(response.Errors[0].Extensions.Code)
 	}
 
 	return errors.New(response.Message)
