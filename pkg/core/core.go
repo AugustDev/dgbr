@@ -11,15 +11,15 @@ import (
 
 // Config - collects all configuration variables into unified struct
 type Config struct {
-	dg   dgraph.Config
-	awsx awsx.Config
+	dg  dgraph.Config
+	aws awsx.Config
 }
 
 // New - returns initializer containing unified config variables
-func New(dg dgraph.Config, awsx awsx.Config) Config {
+func New(dg dgraph.Config, aws awsx.Config) Config {
 	return Config{
-		dg:   dg,
-		awsx: awsx,
+		dg:  dg,
+		aws: aws,
 	}
 }
 
@@ -46,12 +46,48 @@ func (conf *Config) BackupSequence() error {
 		return err
 	}
 
-	err = conf.awsx.UploadToS3(archiveName)
+	err = conf.aws.UploadToS3(archiveName)
 	if err != nil {
 		return err
 	}
 
 	err = utils.Clean(conf.dg.ExportPath, archiveName)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// RestoreSequence - initiates restore sequence
+// 1. Download backup from S3 bucket
+// 2. Unarchive to temporary folder
+// 3. Obtain schema
+// 4. Perform dgraph import using live loader
+// 5. Cleans temporary folder
+func (conf *Config) RestoreSequence() error {
+
+	filepath, err := conf.aws.DownloadFromS3("aa-localhost-2020-09-13T08:52:59+01:00.zip")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	restorePath, err := utils.Unarchive(filepath)
+	if err != nil {
+		return err
+	}
+
+	schemaPath, err := utils.GetSchemaPath(dgraph.TempDataFolder)
+	if err != nil {
+		return err
+	}
+
+	err = conf.dg.Restore(restorePath, schemaPath)
+	if err != nil {
+		return err
+	}
+
+	err = utils.CleanAfterRestore()
 	if err != nil {
 		return err
 	}

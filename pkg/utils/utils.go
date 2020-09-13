@@ -2,10 +2,14 @@ package utils
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/AugustDev/dgraph-backup-restore/pkg/dgraph"
+	"github.com/mholt/archiver"
 )
 
 // Archive - compresses the contents of the directory
@@ -70,6 +74,19 @@ func Archive(source, target string) error {
 	return err
 }
 
+// Unarchive - unarchives compressed backup
+func Unarchive(source string) (string, error) {
+
+	err := archiver.Unarchive(source, dgraph.TempDataFolder)
+	if err != nil {
+		return "", err
+	}
+
+	restoreDir := fmt.Sprintf("%s/%s", dgraph.TempDataFolder, strings.TrimSuffix(source, filepath.Ext(source)))
+
+	return restoreDir, nil
+}
+
 // DeleteFolderContents - removes exports folder conents after successful backup
 // We don't want to upload old backups again
 func deleteFolderContents(dir string) error {
@@ -99,6 +116,32 @@ func Clean(exportsPath, archiveName string) error {
 	}
 
 	err = os.Remove(archiveName)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetSchemaPath - returns path to the schema file
+// NOTE: assuming there is only one .schema.gz file
+func GetSchemaPath(dir string) (schemaPath string, err error) {
+	err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if strings.Contains(path, ".schema.gz") {
+			schemaPath = path
+		}
+		return nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return schemaPath, nil
+}
+
+// CleanAfterRestore - deletes tempoerary directory after backup restore
+func CleanAfterRestore() error {
+	err := deleteFolderContents(dgraph.TempDataFolder)
 	if err != nil {
 		return err
 	}
