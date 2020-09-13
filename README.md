@@ -39,7 +39,7 @@ AWS_ACCESS_KEY=X
 AWS_SECRET_KEY=Y
 BUCKET=views-dgraph-backups-development
 REGION=eu-west-1
-EXPORT_PATH=/Users/amiras/exports
+EXPORT_PATH=/Users/august/exports
 
 dgbr backup \
 --AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
