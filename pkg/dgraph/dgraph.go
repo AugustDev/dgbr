@@ -45,7 +45,7 @@ func (dg *Config) Export() error {
 		return errors.New(response.Errors[0].Extensions.Code)
 	}
 
-	return errors.New(response.Message)
+	return nil
 }
 
 // Restore - initiates importing backup to Dgraph
