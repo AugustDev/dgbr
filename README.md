@@ -21,8 +21,8 @@ Importing database requires specifying name of the `zip` file in S3 bucket.
 
 ```bash
 dgbr restore \
---AWS_ACCESS_KEY=AKIASEJMBX3ZVP6IVP4L \
---AWS_SECRET_KEY=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 \
+--AWS_ACCESS_KEY=X \
+--AWS_SECRET_KEY=Y \
 --bucket=views-dgraph-backups-development \
 --region=eu-west-1 \
 --name=dg-my_backup.zip
