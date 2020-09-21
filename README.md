@@ -3,6 +3,15 @@
 ## Details
 This tool allows to export and import Dgraph database to AWS S3 bucket. Backups are created by requesting Dgraph to export existing database, archiving the data and uploading it to the S3 bucket. Backups can be configured to be made periodically. Database restore allows to download existing archive from S3 bucket and import it to the database using live loader.
 
+## Setup
+You can either download binary release or build dgbr yourself. If you choose to download the release, you may add it to your bin path like this.
+```
+wget https://github.com/AugustDev/dgbr/releases/download/0.9.1/dgbr-linux-amd64.gz
+gunzip -c dgbr-linux-amd64.gz > dgbr
+chmod +x dgbr
+sudo mv dgbr /usr/bin/dgbr
+```
+
 ## Usage
 Both Dgraph export and import actions require specifying: `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `bucket` and `region`.
 ### Backup

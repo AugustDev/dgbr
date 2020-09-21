@@ -1,4 +1,7 @@
 *.zip
 bin/
+release/
+scripts/
+*.sh
 .DS_Store
 dgbr
