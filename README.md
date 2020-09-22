@@ -16,7 +16,7 @@ go install
 ### Release
 If you choose to download the release, you may add it to your bin path like this.
 ```
-wget https://github.com/AugustDev/dgbr/releases/download/0.9.1/dgbr-linux-amd64.gz
+wget https://github.com/AugustDev/dgbr/releases/download/1.0.0/dgbr-linux-amd64.gz
 gunzip -c dgbr-linux-amd64.gz > dgbr
 chmod +x dgbr
 sudo mv dgbr /usr/bin/dgbr
