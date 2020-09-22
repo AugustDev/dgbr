@@ -1,10 +1,19 @@
 # Dgraph Backup Restore (dgbr)
 
 ## Details
-This tool allows to export and import Dgraph database to AWS S3 bucket. Backups are created by requesting Dgraph to export existing database, archiving the data and uploading it to the S3 bucket. Backups can be configured to be made periodically. Database restore allows to download existing archive from S3 bucket and import it to the database using live loader.
+This tool allows to export/import Dgraph database to/from AWS S3 bucket. Backups are created by requesting Dgraph to export existing database, archiving the data and uploading it to the S3 bucket. Backups can be configured to be made periodically. Database restore allows to download existing archive from S3 bucket and import it to the database using live loader. `dgbr` is currently used in production and is planned to be maintained and improved.
 
-## Setup
-You can either download binary release or build dgbr yourself. If you choose to download the release, you may add it to your bin path like this.
+## Install
+You can either download binary release or build `dgbr` from source.
+### From source
+`dgbr` is written in Go, therefore you have to instal the compiler to build it from source.
+```
+git clone https://github.com/AugustDev/dgbr.git
+go build
+go install
+```
+### Release
+If you choose to download the release, you may add it to your bin path like this.
 ```
 wget https://github.com/AugustDev/dgbr/releases/download/0.9.1/dgbr-linux-amd64.gz
 gunzip -c dgbr-linux-amd64.gz > dgbr
@@ -13,9 +22,9 @@ sudo mv dgbr /usr/bin/dgbr
 ```
 
 ## Usage
-Both Dgraph export and import actions require specifying: `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `bucket` and `region`.
+Both Dgraph backup and restore actions require specifying: `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `bucket` and `region`.
 ### Backup
-In adition to aforementioned variables export requires to specify Dgraph `export` path which is specified when starting `dgraph alpha` (Read in Notes). Make sure Dgrpah has permission to write to that path.
+In adition to aforementioned variables `dgbr backup` requires to specify Dgraph `export` path which is specified when starting `dgraph alpha` (Read in Notes). Make sure Dgraph has permission to write to `export` path and that the user calling `dgbr` has permission to access and then delete files from `export` path.
 
 ```bash
 dgbr backup \
@@ -26,7 +35,7 @@ dgbr backup \
 --export=/exports
 ```
 ### Restore
-Importing database requires specifying name of the `zip` file in S3 bucket.
+Restoring database requires specifying name of the `zip` file in S3 bucket.
 
 ```bash
 dgbr restore \
@@ -63,6 +72,9 @@ An example of hourly export cronjob would be
 0 * * * * /Users/august/backup.sh >> /Users/august/log.txt 2>&1
 ```
 where the logs are saved to `/Users/august/log.txt`.
+
+## CLI help
+
 ## Notes
 ##### What is my export path?
 

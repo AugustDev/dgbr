@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+Copyright © 2020 Augustinas Malinauskas <augustinasmal@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -35,17 +35,13 @@ var bucket string
 var rootCmd = &cobra.Command{
 	Use:   "dgbr",
 	Short: "Dgraph community backup restore tool",
-	Long: `Dgraph Backup-Restore community edition
+	Long: `Dgraph Backup-Restore (dgbr) community edition
 
 This tool allows to export Dgraph database and schema and automatically upload it to S3 bucket.
 Furthermore backups from S3 bucket can be initiated using the CLI.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
+// Execute - executes the rootCmd
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -56,7 +52,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.dgraph-backup-restore.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.dgraph-backup-restore.yaml)")
 	rootCmd.PersistentFlags().StringVar(&awsAccessKey, "AWS_ACCESS_KEY", "", "AWS access key for your IAM user (required)")
 	rootCmd.PersistentFlags().StringVar(&awsSecretKey, "AWS_SECRET_KEY", "", "AWS secret key for your IAM user (requried)")
 	rootCmd.PersistentFlags().StringVar(&region, "region", "", "Your AWS S3 bucket region (requried)")
