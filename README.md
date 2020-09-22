@@ -1,3 +1,4 @@
+![GitHub Logo](/graphics/logo.png)
 # Dgraph Backup Restore (dgbr)
 
 ## Details
