@@ -42,7 +42,7 @@ Restoring database requires specifying name of the `zip` file in S3 bucket.
 dgbr restore \
 --AWS_ACCESS_KEY=X \
 --AWS_SECRET_KEY=Y \
---bucket=views-dgraph-backups-development \
+--bucket=dgraph-backups-development \
 --region=eu-west-1 \
 --name=dg-my_backup.zip
 ```
@@ -56,7 +56,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin"
 
 AWS_ACCESS_KEY=X
 AWS_SECRET_KEY=Y
-BUCKET=views-dgraph-backups-development
+BUCKET=dgraph-backups-development
 REGION=eu-west-1
 EXPORT_PATH=/Users/august/exports
 
